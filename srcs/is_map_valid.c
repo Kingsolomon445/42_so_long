@@ -6,28 +6,11 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:45:22 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/23 16:49:55 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:24:50 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void ft_free_lst(t_list **headref)
-{
-	t_list	*current;
-
-	if (!(*headref))
-		return ;
-	while ((*headref)->next)
-	{
-		current = *headref;
-		*headref = (*headref)->next;
-		ft_free(current->content);
-		ft_free(current);
-	}
-	ft_free((*headref)->content);
-	ft_free(*headref);
-}
 
 int count_occurences(t_list *headref, char ch)
 {
@@ -84,24 +67,34 @@ int is_wall(char *line)
 int	is_surrounded_by_wall(t_list *headref)
 {
 	t_list	*current;
+	t_list	*last;
 	
-	if (!is_wall(headref->content) || !is_wall(ft_lstlast(headref)->content))
+	last = ft_lstlast(headref);
+	if (!is_wall(headref->content) || !is_wall(last->content))
 		return (0);
 	current = headref;
 	while (current)
 	{
-		if (*(char *)(current->content) != '1' || *(char *)(current->content + ft_strlen(current->content - 1)) != '1')
+		if (*(char *)(current->content) != '1' || *(char *)(current->content + ft_strlen(current->content) - 1) != '1')
 			return (0);
 		current = current->next;
 	}
 	return (1);
 }
 
-int	is_map_valid(t_list *headref)
+void	is_map_valid(t_mlx *mlx_game)
 {
-	if (count_occurences(headref, 'E') != 1 || count_occurences(headref, 'C') < 1 || count_occurences(headref, 'P') != 1)
-		return (0);
-	if (!is_map_rectangular(headref) || !is_surrounded_by_wall(headref))
-		return (0);
-	return (1);
+	t_list	*headref;
+
+	headref = mlx_game->headref;
+	if (count_occurences(headref, 'E') != 1)
+		ft_error(mlx_game, "No Exit or Too many Exit!\n");
+	if (count_occurences(headref, 'C') < 1)
+		ft_error(mlx_game, "There are no collectibles\n");
+	if (count_occurences(headref, 'P') != 1)
+		ft_error(mlx_game, "No player starting position or too many!\n");
+	if (!is_map_rectangular(headref))
+		ft_error(mlx_game, "Map isn't rectangular!\n");
+	if (!is_surrounded_by_wall(headref))
+		ft_error(mlx_game, "Map is not surrounded by wall!\n");
 }

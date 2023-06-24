@@ -1,0 +1,83 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/24 20:26:44 by ofadahun          #+#    #+#             */
+/*   Updated: 2023/06/24 20:27:23 by ofadahun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "so_long.h"
+
+void	is_line_valid(char *line, t_mlx *mlx_game)
+{
+	int	i;
+
+	i = 0;
+	if (!line)
+		ft_error(mlx_game, "Empty map!\n");
+	if (*line == '\n' || *line == '\0')
+		ft_error(mlx_game, "Empty line in map!\n");
+	while (*(line + i))
+	{
+		if (!ft_strchr("01ECXP", *(line + i)) && *(line + i + 1))
+		{
+			ft_printf("char ===== %c", *(line + i));
+			ft_free(line);
+			ft_error(mlx_game, "Invalid character in map\n");
+		}
+		i++;
+	}
+}
+
+t_list	*make_new_node(char *line)
+{
+	char	*new_line;
+
+	if (ft_strchr(line, '\n'))
+	{
+		new_line = ft_strtrim((const char *)line, "\n");
+		ft_free(line);
+		return (ft_lstnew(new_line));
+	}
+	else
+		return (ft_lstnew(line));
+}
+
+void	read_map(t_mlx *mlx_game, int fd)
+{
+	char	*line;
+	t_list	*new;
+
+	line = get_next_line(fd);
+	is_line_valid(line, mlx_game);
+	mlx_game->headref = make_new_node(line);
+	if (!mlx_game->headref)
+		ft_error(mlx_game, "Allocation fails!\n");
+	while(1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			return ;
+		is_line_valid(line, mlx_game);
+		new = make_new_node(line);
+		if (!new)
+			ft_error(mlx_game, "Allocation fails!\n");
+		ft_lstadd_back(&(mlx_game->headref), new);
+	}
+}
+
+void	print_map(t_mlx *mlx_game)
+{
+	t_list	*current;
+
+	current = mlx_game->headref;
+	while (current)
+	{
+		ft_printf("%s\n", current->content);
+		current = current->next;
+	}
+}

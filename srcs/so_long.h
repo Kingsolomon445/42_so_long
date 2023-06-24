@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 13:19:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/23 20:35:28 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:27:45 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct t_player
 	mlx_texture_t   *player_texture;
 	mlx_image_t     *player_img;
 	int             total_moves;
+	int				score;
 	int             move_size;
 	int             player_can_exit;
 	int				have_enemy;
@@ -57,16 +58,10 @@ typedef struct t_player
 	
 } t_player;
 
-// typedef struct t_maplist
-// {
-// 	char		*line;
-// 	t_maplist	*next;
-// } t_maplist;
-
 typedef struct t_mlx
 {
+	xpm_t			*collectible_xpm;
 	mlx_texture_t   *wall_texture;
-	mlx_texture_t   *collectible_texture;
 	mlx_texture_t   *exit_texture;
 	mlx_texture_t	*enemy_texture;
 	mlx_texture_t	*background_texture;
@@ -81,18 +76,21 @@ typedef struct t_mlx
 	t_winsize		*winsize;
 	t_list			*headref;
 	int				img_size;
+	int				collectible_cnt;
 	
 } t_mlx;
 
 
-int		is_map_valid(t_list *headref);
+void	is_map_valid(t_mlx *mlx_game);
 void	check_if_collectible_taken(t_mlx *mlx_game);
 
 
 void    my_keyhook(mlx_key_data_t keydata, void *param);
 void	my_closehook(void *param);
+void	my_loophook(void *param);
 void    player_moves(t_mlx *mlx_game, mlx_key_data_t keydata);
 
+void	read_map(t_mlx *mlx_game, int fd);
 void	print_map(t_mlx *mlx_game);
 void	ft_free_ptr_all(t_mlx *mlx_game);
 void	ft_free_lst(t_list **headref);
@@ -102,8 +100,9 @@ void	end_game(t_mlx *mlx_game, const char *message);
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref);
 
 void	update_player_img(t_mlx *mlx_game, char side, int x, int y);
+void	update_str_img(t_mlx *mlx_game);
 void	set_window_size(t_mlx *mlx_game);
 void	set_up_img_pos(t_mlx *mlx_game);
 void	set_up_images(t_mlx *mlx_game);
-
+void	check_leaks();
 #endif //SO_LONG_H
