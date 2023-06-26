@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movements.c                                        :+:      :+:    :+:   */
+/*   movements_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:08:35 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:56:45 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:42:22 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
-void	update_player_img(t_mlx *mlx_game, char side, int x, int y)
+void	update_player_img(t_mlx *mlx_game, int x, int y)
 {
 	char	*path;
 
-	if (side == 'f')
+	if (mlx_game->player->side_facing == 'f')
 		path = "resources/hero/4.png";
-	else if (side == 'b')
+	else if (mlx_game->player->side_facing == 'b')
 		path = "resources/hero/1.png";
-	else if (side == 'u')
+	else if (mlx_game->player->side_facing == 'u')
 		path = "resources/hero/5.png";
 	else
 		path = "resources/hero/3.png";
@@ -28,29 +28,66 @@ void	update_player_img(t_mlx *mlx_game, char side, int x, int y)
 	mlx_game->player->player_texture = mlx_load_png(path);
 	mlx_game->player->player_img = mlx_texture_to_image(\
 	mlx_game->mlx, mlx_game->player->player_texture);
-	mlx_resize_image(\
-	mlx_game->player->player_img, mlx_game->img_size, mlx_game->img_size);
+	mlx_resize_image(mlx_game->player->player_img, \
+	mlx_game->img_size, mlx_game->img_size);
 	mlx_image_to_window(mlx_game->mlx, mlx_game->player->player_img, x, y);
 	mlx_delete_texture(mlx_game->player->player_texture);
+}
+
+void	update_str_img(t_mlx *mlx_game)
+{
+	char	*str;
+	char	*score_str;
+	char	*player_moves_str;
+	char	*score;
+	char	*str_to_put;
+
+	player_moves_str = ft_itoa(mlx_game->player->total_moves);
+	str = ft_strjoin("  Moves: ", player_moves_str);
+	score_str = ft_itoa(mlx_game->player->score);
+	score = ft_strjoin("Score: ", score_str);
+	ft_free(score_str);
+	ft_free(player_moves_str);
+	mlx_delete_image(mlx_game->mlx, mlx_game->str_img);
+	str_to_put = ft_strjoin(score, str);
+	mlx_game->str_img = mlx_put_string(mlx_game->mlx, \
+	(const char *)str_to_put, 0, 0);
+	ft_free(str);
+	ft_free(score);
+	ft_free(str_to_put);
 }
 
 void	update_and_display_moves(t_mlx *mlx_game, \
 mlx_instance_t *instances, int move_size, char axis)
 {
+	mlx_delete_image(mlx_game->mlx, mlx_game->fire_img);
+	mlx_game->fire_img = NULL;
 	if (axis == 'x')
 		instances[0].x += move_size;
 	else
 		instances[0].y += move_size;
 	if (axis == 'x' && move_size > 0)
-		update_player_img(mlx_game, 'f', instances[0].x, instances[0].y);
+	{
+		mlx_game->player->side_facing = 'f';
+		update_player_img(mlx_game, instances[0].x, instances[0].y);
+	}
 	else if (axis == 'x' && move_size < 0)
-		update_player_img(mlx_game, 'b', instances[0].x, instances[0].y);
+	{
+		mlx_game->player->side_facing = 'b';
+		update_player_img(mlx_game, instances[0].x, instances[0].y);
+	}
 	else if (axis == 'y' && move_size > 0)
-		update_player_img(mlx_game, 'd', instances[0].x, instances[0].y);
+	{
+		mlx_game->player->side_facing = 'd';
+		update_player_img(mlx_game, instances[0].x, instances[0].y);
+	}
 	else
-		update_player_img(mlx_game, 'u', instances[0].x, instances[0].y);
+	{
+		mlx_game->player->side_facing = 'u';
+		update_player_img(mlx_game, instances[0].x, instances[0].y);
+	}
 	mlx_game->player->total_moves++;
-	ft_printf("Current moves:  %d\n", mlx_game->player->total_moves);
+	update_str_img(mlx_game);
 }
 
 void	player_moves(t_mlx *mlx_game, mlx_key_data_t keydata)

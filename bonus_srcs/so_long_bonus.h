@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   so_long_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 13:19:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:58:09 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:16:13 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef SO_LONG_BONUS_H
+# define SO_LONG_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -45,20 +45,32 @@ typedef struct t_player
 	mlx_texture_t	*player_texture;
 	mlx_image_t		*player_img;
 	int				total_moves;
+	int				score;
 	int				move_size;
 	int				player_can_exit;
+	int				have_enemy;
+	char			fire_side_facing;
+	char			side_facing;
+	char			fire_axis;
+	int				fire_stopped;
+	int				fire_move_size;
 }	t_player;
 
 typedef struct t_mlx
 {
 	xpm_t			*collectible_xpm;
+	xpm_t			*fire_xpm;
 	mlx_texture_t	*wall_texture;
 	mlx_texture_t	*exit_texture;
+	mlx_texture_t	*enemy_texture;
 	mlx_texture_t	*background_texture;
 	mlx_image_t		*wall_img;
 	mlx_image_t		*collectible_img;
+	mlx_image_t		*fire_img;
 	mlx_image_t		*exit_img;
+	mlx_image_t		*enemy_img;
 	mlx_image_t		*background_img;
+	mlx_image_t		*str_img;
 	mlx_t			*mlx;
 	t_player		*player;
 	t_winsize		*winsize;
@@ -72,6 +84,7 @@ void	is_map_ext_ber(t_mlx *mlx_game, char *path);
 int		is_move_valid(t_mlx *mlx_game, int x, int y);
 int		check_key(mlx_key_data_t keydata);
 void	check_if_collectible_taken(t_mlx *mlx_game);
+void	check_if_collide_with_enemy(t_mlx *mlx_game);
 
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	my_closehook(void *param);
@@ -87,9 +100,9 @@ void	open_exit_door(t_mlx *mlx_game, int x, int y);
 void	end_game(t_mlx *mlx_game, const char *message);
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref);
 
-void	update_player_img(t_mlx *mlx_game, char side, int x, int y);
+void	update_player_img(t_mlx *mlx_game, int x, int y);
 void	update_str_img(t_mlx *mlx_game);
 void	set_window_size(t_mlx *mlx_game);
 void	set_up_img_pos(t_mlx *mlx_game);
 void	set_up_images(t_mlx *mlx_game);
-#endif //SO_LONG_H
+#endif //SO_LONG_BONUS_H

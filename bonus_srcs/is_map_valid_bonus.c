@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_map_valid.c                                     :+:      :+:    :+:   */
+/*   is_map_valid_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:45:22 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:11:44 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:11:04 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	count_occurences(t_list *headref, char ch)
 {
@@ -88,7 +88,7 @@ void	is_map_valid(t_mlx *mlx_game)
 	t_list	*headref;
 
 	headref = mlx_game->headref;
-	if (count_occurences(headref, 'E') != 1)
+	if (count_occurences(headref, 'X') != 1)
 		ft_error(mlx_game, "No Exit or Too many Exit!\n");
 	if (count_occurences(headref, 'C') < 1)
 		ft_error(mlx_game, "There are no collectibles\n");

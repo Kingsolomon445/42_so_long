@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   read_map_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 20:26:44 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:16:22 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:25:47 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	is_map_ext_ber(t_mlx *mlx_game, char *path)
 {
@@ -38,7 +38,7 @@ void	is_line_valid(char *line, t_mlx *mlx_game)
 		ft_error(mlx_game, "Empty line in map!\n");
 	while (*(line + i))
 	{
-		if (!ft_strchr("01ECP", *(line + i)) && *(line + i + 1))
+		if (!ft_strchr("01ECPX", *(line + i)) && *(line + i + 1))
 		{
 			ft_free(line);
 			ft_error(mlx_game, "Invalid character in map\n");
