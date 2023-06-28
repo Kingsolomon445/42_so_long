@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:59:23 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 16:55:58 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:21:13 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	check_if_collectible_taken(t_mlx *mlx_game)
 	player = mlx_game->player;
 	collectible = mlx_game->collectible_img;
 	i = 0;
-	while (i <= mlx_game->collectible_cnt)
+	while (i < mlx_game->collectible_cnt)
 	{
 		if (player->player_img->instances[0].x == \
 		collectible->instances[i].x && player->player_img->instances[0].y == \
@@ -56,12 +56,12 @@ void	check_if_collectible_taken(t_mlx *mlx_game)
 
 void	check_if_collide_with_enemy(t_mlx *mlx_game)
 {
-	int i;
+	int	i;
 	int	enemy_cnt;
-	
+
 	i = 0;
 	enemy_cnt = mlx_game->enemy_img->count;
-	while (i <= enemy_cnt)
+	while (i < enemy_cnt)
 	{
 		if (mlx_game->player->player_img->instances[0].x == \
 		mlx_game->enemy_img->instances[i].x && \
@@ -72,22 +72,49 @@ void	check_if_collide_with_enemy(t_mlx *mlx_game)
 	}
 }
 
-int	is_move_valid(t_mlx *mlx_game, int x, int y)
+int	check_if_fire_hit_wall(t_mlx *mlx_game, int x, int y)
 {
-	int	wall_count;
 	int	i;
+	int	wall_cnt;
 
 	i = 0;
-	wall_count = mlx_game->wall_img->count;
-	while (i < wall_count)
+	wall_cnt = mlx_game->wall_img->count;
+	while (i < wall_cnt)
 	{
-		if (x == mlx_game->wall_img->instances[i].x && \
-		y == mlx_game->wall_img->instances[i].y)
-			return (0);
+		if (mlx_game->wall_img->instances[i].x == x && \
+		mlx_game->wall_img->instances[i].y == y)
+		{
+			mlx_delete_image(mlx_game->mlx, mlx_game->fire_img);
+			mlx_game->fire_img = NULL;
+			return (1);
+		}
 		i++;
 	}
-	if (x == mlx_game->exit_img->instances[0].x && y == \
-	mlx_game->exit_img->instances[0].y && !mlx_game->player->player_can_exit)
-		return (0);
-	return (1);
+	return (0);
+}
+
+void	check_if_enemy_hit(t_mlx *mlx_game)
+{
+	int	i;
+	int	enemy_cnt;
+
+	i = 0;
+	enemy_cnt = mlx_game->enemy_img->count;
+	while (i < enemy_cnt)
+	{
+		if (mlx_game->enemy_img->instances[i].x == \
+		mlx_game->fire_img->instances[0].x \
+		&& mlx_game->enemy_img->instances[i].y == \
+		mlx_game->fire_img->instances[0].y)
+		{
+			mlx_delete_image(mlx_game->mlx, mlx_game->fire_img);
+			mlx_game->fire_img = NULL;
+			mlx_game->enemy_img->instances[i].x += \
+			mlx_game->winsize->width * 20;
+			mlx_game->enemy_img->instances[i].y += \
+			mlx_game->winsize->height * 20;
+			break ;
+		}
+		i++;
+	}
 }

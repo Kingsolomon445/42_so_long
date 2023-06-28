@@ -36,6 +36,10 @@ BONUS_OBJS_DIR = ./bonus_objs
 
 BONUS_OBJS = $(addprefix $(BONUS_OBJS_DIR)/,$(notdir $(BONUS_SRCS:.c=.o)))
 
+MLX_GIT = https://github.com/codam-coding-college/MLX42
+
+TESTER_GIT = https://github.com/augustobecker/so_long_tester
+
 all: $(NAME)
 
 $(OBJS_DIR):
@@ -77,4 +81,10 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all	clean fclean re bonus
+mlx:
+	git clone $(MLX_GIT)
+
+test:
+	git clone $(TESTER_GIT)
+
+.PHONY:	all	clean fclean re bonus mlx test

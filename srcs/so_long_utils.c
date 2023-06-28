@@ -6,36 +6,11 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:12:07 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:07:05 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:00:41 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	ft_free_lst(t_list **headref)
-{
-	t_list	*current;
-
-	if (!(*headref))
-		return ;
-	while ((*headref)->next)
-	{
-		current = *headref;
-		*headref = (*headref)->next;
-		ft_free(current->content);
-		ft_free(current);
-	}
-	ft_free((*headref)->content);
-	ft_free(*headref);
-}
-
-void	ft_free_ptr_all(t_mlx *mlx_game)
-{
-	ft_free(mlx_game->player);
-	ft_free(mlx_game->winsize);
-	ft_free_lst(&(mlx_game->headref));
-	ft_free(mlx_game);
-}
 
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref)
 {
@@ -49,13 +24,13 @@ void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref)
 void	open_exit_door(t_mlx *mlx_game, int x, int y)
 {
 	mlx_delete_image(mlx_game->mlx, mlx_game->exit_img);
-	mlx_game->exit_texture = mlx_load_png("resources/exit-open.png");
+	mlx_game->exit_xpm = mlx_load_xpm42("resources/door_open.xpm42");
 	mlx_game->exit_img = mlx_texture_to_image(\
-	mlx_game->mlx, mlx_game->exit_texture);
+	mlx_game->mlx, &(mlx_game->exit_xpm->texture));
 	mlx_resize_image(\
 	mlx_game->exit_img, mlx_game->img_size, mlx_game->img_size);
 	mlx_image_to_window(mlx_game->mlx, mlx_game->exit_img, x, y);
-	mlx_delete_texture(mlx_game->exit_texture);
+	mlx_delete_xpm42(mlx_game->exit_xpm);
 	mlx_game->player->player_can_exit = 1;
 }
 

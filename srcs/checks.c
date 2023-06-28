@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:37:03 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 16:06:11 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:43:03 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	check_if_collectible_taken(t_mlx *mlx_game)
 	player = mlx_game->player;
 	collectible = mlx_game->collectible_img;
 	i = 0;
-	while (i <= mlx_game->collectible_cnt)
+	while (i < mlx_game->collectible_cnt)
 	{
 		if (player->player_img->instances[0].x == \
 		collectible->instances[i].x && player->player_img->instances[0].y \

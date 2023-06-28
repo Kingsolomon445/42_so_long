@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:16:32 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:18:31 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:38:20 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_up_images(t_mlx *mlx_game)
 	mlx_delete_texture(mlx_game->background_texture);
 	mlx_resize_image(mlx_game->background_img, mlx_game->img_size, \
 	mlx_game->img_size);
-	mlx_game->wall_texture = mlx_load_png("resources/wall.png");
+	mlx_game->wall_texture = mlx_load_png("resources/Grass.png");
 	mlx_game->wall_img = mlx_texture_to_image(mlx_game->mlx, \
 	mlx_game->wall_texture);
 	mlx_delete_texture(mlx_game->wall_texture);
@@ -46,12 +46,12 @@ void	set_up_images(t_mlx *mlx_game)
 	mlx_resize_image(mlx_game->collectible_img, mlx_game->img_size, \
 	mlx_game->img_size);
 	mlx_delete_xpm42(mlx_game->collectible_xpm);
-	mlx_game->exit_texture = mlx_load_png("resources/exit.png");
+	mlx_game->exit_xpm = mlx_load_xpm42("resources/door.xpm42");
 	mlx_game->exit_img = mlx_texture_to_image(mlx_game->mlx, \
-	mlx_game->exit_texture);
+	&(mlx_game->exit_xpm->texture));
 	mlx_resize_image(mlx_game->exit_img, mlx_game->img_size, \
 	mlx_game->img_size);
-	mlx_delete_texture(mlx_game->exit_texture);
+	mlx_delete_xpm42(mlx_game->exit_xpm);
 }
 
 void	put_img_on_map(t_mlx *mlx_game, char *line, int y)

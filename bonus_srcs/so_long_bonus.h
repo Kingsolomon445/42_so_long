@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 13:19:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 18:16:13 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:21:57 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ typedef struct t_mlx
 {
 	xpm_t			*collectible_xpm;
 	xpm_t			*fire_xpm;
+	xpm_t			*exit_xpm;
 	mlx_texture_t	*wall_texture;
-	mlx_texture_t	*exit_texture;
 	mlx_texture_t	*enemy_texture;
 	mlx_texture_t	*background_texture;
 	mlx_image_t		*wall_img;
@@ -79,12 +79,28 @@ typedef struct t_mlx
 	int				collectible_cnt;
 }	t_mlx;
 
+typedef struct t_valid_path
+{
+	int		player_row;
+	int		player_col;
+	int		exit_row;
+	int		exit_col;
+	int		**visited;
+	char	**map;
+}	t_valid_path;
+
 void	is_map_valid(t_mlx *mlx_game);
 void	is_map_ext_ber(t_mlx *mlx_game, char *path);
 int		is_move_valid(t_mlx *mlx_game, int x, int y);
+int		has_valid_path(t_list **headref, int rows, int cols);
 int		check_key(mlx_key_data_t keydata);
 void	check_if_collectible_taken(t_mlx *mlx_game);
 void	check_if_collide_with_enemy(t_mlx *mlx_game);
+int		check_if_fire_hit_exit(t_mlx *mlx_game, int x, int y);
+int		check_if_fire_hit_wall(t_mlx *mlx_game, int x, int y);
+void	check_if_enemy_hit(t_mlx *mlx_game);
+void	shoot_fire(t_mlx *mlx_game);
+void	update_fire(t_mlx *mlx_game);
 
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	my_closehook(void *param);
@@ -95,6 +111,8 @@ void	read_map(t_mlx *mlx_game, int fd);
 void	print_map(t_mlx *mlx_game);
 void	ft_free_ptr_all(t_mlx *mlx_game);
 void	ft_free_lst(t_list **headref);
+void	ft_free_double_int_ptr(int	**ptr, int rows);
+void	ft_free_double_str_ptr(char	**ptr);
 void	ft_error(t_mlx *mlx_game, const char *message);
 void	open_exit_door(t_mlx *mlx_game, int x, int y);
 void	end_game(t_mlx *mlx_game, const char *message);
