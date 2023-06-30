@@ -58,7 +58,10 @@ $(MLX):
 	cd $(MLX_DIR) && cmake -B build && cmake --build build -j4
 
 $(LIBFT):
-	cd $(LIBFT_DIR) && make all
+	if [ ! -d "$(LIBFT_DIR)" ]; then \
+		git clone https://github.com/Kingsolomon445/42_libft libft; \
+	fi
+	make -C $(LIBFT_DIR) all
 
 $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
