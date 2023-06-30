@@ -48,7 +48,7 @@ $(OBJS_DIR):
 $(BONUS_OBJS_DIR):
 	mkdir -p $(BONUS_OBJS_DIR)
 
-$(NAME): $(OBJS_DIR) $(OBJS) $(MLX) $(LIBFT)
+$(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(MLX)
 	$(CC) -o $(NAME) $(OBJS) $(MLX) $(LIBFT) $(INC_GLFW)
 
 $(BONUS): $(BONUS_OBJS_DIR) $(BONUS_OBJS) $(MLX) $(LIBFT)
