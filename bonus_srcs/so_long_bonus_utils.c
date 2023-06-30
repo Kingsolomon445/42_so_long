@@ -33,9 +33,6 @@ void	flood_fill(int row, int col, t_valid_path *vars, t_winsize *winsize)
 
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref)
 {
-	t_list	*current;
-
-	current = headref;
 	*hor_wall += ft_strlen(headref->content);
 	*ver_wall += ft_lstsize(headref);
 }
