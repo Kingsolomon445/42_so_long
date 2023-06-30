@@ -4,12 +4,19 @@
 
 ```
 git clone https://github.com/Kingsolomon445/42_so_long
-make mlx
-make dep  # for dependencies e.g cmake && 
-make all  # so long game without enemies
-make bonus  # with enemies
-./so_long <path/to/map>
-./so_long_bonus <path/to/bonus/maps>
+
+make mlx  # For the MLX42 library
+
+make dep  # for dependencies e.g cmake && glfw
+
+make all  # without enemies feature
+
+make bonus  # with enemies feature
+
+./so_long <path/to/map>     # Run executable without enemies feature
+
+./so_long_bonus <path/to/bonus/maps>   # Run executable with enemies feature
+
 ```
 
 * **W or UP key**: Moves up
@@ -17,3 +24,4 @@ make bonus  # with enemies
 * **S or LEFT key**: Moves left
 * **D or RIGHT key**: Moves right
 * **SPACE key**: Shoot fire at enemy (This is for so_long_bonus)
+* **ESC key**: Quits game
