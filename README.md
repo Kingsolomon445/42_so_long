@@ -19,6 +19,8 @@ make bonus  # with enemies feature
 
 ```
 
+### Note:  If you get a compile error, you may need to edit this Makefile line: INC_GLFW = -lglfw -L "/opt/homebrew/Cellar/glfw/3.3.8/lib" as this may not be in thesame path on your computer
+
 * **W or UP key**: Moves up
 * **A or DOWN key**: Moves down
 * **S or LEFT key**: Moves left
