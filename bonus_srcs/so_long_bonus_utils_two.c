@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:48:06 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 19:16:30 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:11:12 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	update_fire_img(t_mlx *mlx_game, int x, int y)
 	mlx_game->fire_img = mlx_texture_to_image(mlx_game->mlx, \
 	&(mlx_game->fire_xpm->texture));
 	mlx_resize_image(mlx_game->fire_img, \
-	mlx_game->img_size - 20, mlx_game->img_size - 20);
+	mlx_game->img_size, mlx_game->img_size);
 	mlx_delete_xpm42(mlx_game->fire_xpm);
 	if (check_if_fire_hit_wall(mlx_game, x, y))
 		return ;
@@ -97,4 +97,28 @@ int	is_move_valid(t_mlx *mlx_game, int x, int y)
 	mlx_game->exit_img->instances[0].y && !mlx_game->player->player_can_exit)
 		return (0);
 	return (1);
+}
+
+int	check_for_side_to_face(t_mlx *mlx_game, char *line, char *prev_line)
+{
+	int	j;
+
+	j = 0;
+	while (*(line + j))
+	{
+		if (*(line + j) == 'P')
+		{
+			if (*(line + j + 1) == '1')
+				mlx_game->player->side_face_start = 'b';
+			if (*(line + j - 1) == '1' && \
+			mlx_game->player->side_face_start == 'b')
+				mlx_game->player->side_face_start = 'u';
+			if (prev_line && *(prev_line + j) == '1' && \
+			mlx_game->player->side_face_start == 'u')
+				mlx_game->player->side_face_start = 'd';
+			return (1);
+		}
+		j++;
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:16:32 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 18:56:06 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:07:57 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void	set_up_player_and_enemy_images(t_mlx *mlx_game)
 {
-	mlx_game->player->player_texture = mlx_load_png("resources/hero/4.png");
+	if (mlx_game->player->side_face_start == 'b')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/1.png");
+	else if (mlx_game->player->side_face_start == 'f')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/4.png");
+	else if (mlx_game->player->side_face_start == 'u')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/5.png");
+	else if (mlx_game->player->side_face_start == 'd')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/3.png");
 	mlx_game->player->player_img = mlx_texture_to_image(mlx_game->mlx, \
 	mlx_game->player->player_texture);
 	mlx_game->player->total_moves = 0;
@@ -22,7 +29,6 @@ void	set_up_player_and_enemy_images(t_mlx *mlx_game)
 	mlx_game->player->have_enemy = 0;
 	mlx_game->player->move_size = mlx_game->img_size;
 	mlx_game->player->player_can_exit = 0;
-	mlx_game->player->side_facing = 'f';
 	mlx_game->fire_img = NULL;
 	mlx_resize_image(mlx_game->player->player_img, mlx_game->img_size, \
 	mlx_game->img_size);

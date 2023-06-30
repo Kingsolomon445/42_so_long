@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:18:36 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 15:09:53 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 19:56:36 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_ESCAPE)
 		end_game(mlx_game, "You quit!");
 	player_moves(mlx_game, keydata);
+	check_if_collectible_taken(mlx_game);
 }
 
 void	my_closehook(void *param)

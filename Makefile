@@ -84,7 +84,12 @@ re:	fclean all
 mlx:
 	git clone $(MLX_GIT)
 
+dep:
+	curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+	brew install cmake
+	brew install glfw
+
 test:
 	git clone $(TESTER_GIT)
 
-.PHONY:	all	clean fclean re bonus mlx test
+.PHONY:	all	clean fclean re bonus test dep mlx

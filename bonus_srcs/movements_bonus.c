@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:08:35 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/26 18:42:22 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 13:59:55 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,14 @@ mlx_instance_t *instances, int move_size, char axis)
 	else
 		instances[0].y += move_size;
 	if (axis == 'x' && move_size > 0)
-	{
 		mlx_game->player->side_facing = 'f';
-		update_player_img(mlx_game, instances[0].x, instances[0].y);
-	}
 	else if (axis == 'x' && move_size < 0)
-	{
 		mlx_game->player->side_facing = 'b';
-		update_player_img(mlx_game, instances[0].x, instances[0].y);
-	}
 	else if (axis == 'y' && move_size > 0)
-	{
 		mlx_game->player->side_facing = 'd';
-		update_player_img(mlx_game, instances[0].x, instances[0].y);
-	}
 	else
-	{
 		mlx_game->player->side_facing = 'u';
-		update_player_img(mlx_game, instances[0].x, instances[0].y);
-	}
+	update_player_img(mlx_game, instances[0].x, instances[0].y);
 	mlx_game->player->total_moves++;
 	update_str_img(mlx_game);
 }

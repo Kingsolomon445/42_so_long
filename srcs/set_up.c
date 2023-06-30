@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:16:32 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 15:38:20 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:43:54 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void	set_up_player_images(t_mlx *mlx_game)
 {
-	mlx_game->player->player_texture = mlx_load_png("resources/hero/4.png");
+	if (mlx_game->player->side_face_start == 'b')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/1.png");
+	else if (mlx_game->player->side_face_start == 'f')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/4.png");
+	else if (mlx_game->player->side_face_start == 'u')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/5.png");
+	else if (mlx_game->player->side_face_start == 'd')
+		mlx_game->player->player_texture = mlx_load_png("resources/hero/3.png");
 	mlx_game->player->player_img = mlx_texture_to_image(\
 	mlx_game->mlx, mlx_game->player->player_texture);
 	mlx_game->player->total_moves = 0;

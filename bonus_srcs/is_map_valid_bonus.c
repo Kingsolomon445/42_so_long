@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:45:22 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 18:04:31 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:34:45 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,10 @@ int	is_surrounded_by_wall(t_list *headref)
 void	is_map_valid(t_mlx *mlx_game)
 {
 	t_list	*headref;
-	int		rows;
-	int		cols;
 
 	headref = mlx_game->headref;
-	rows = ft_lstsize(headref);
-	cols = ft_strlen((char *)headref->content);
+	mlx_game->winsize->rows = ft_lstsize(headref);
+	mlx_game->winsize->cols = ft_strlen((char *)headref->content);
 	if (count_occurences(headref, 'X') != 1)
 		ft_error(mlx_game, "No Exit or Too many Exit!\n");
 	if (count_occurences(headref, 'C') < 1)
@@ -102,6 +100,6 @@ void	is_map_valid(t_mlx *mlx_game)
 		ft_error(mlx_game, "Map isn't rectangular!\n");
 	if (!is_surrounded_by_wall(headref))
 		ft_error(mlx_game, "Map is not surrounded by wall!\n");
-	if (!has_valid_path(&headref, rows, cols))
+	if (!has_valid_path(&headref, mlx_game->winsize))
 		ft_error(mlx_game, "Map doesn't have a valid path!\n");
 }

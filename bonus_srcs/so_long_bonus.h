@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 13:19:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 19:21:57 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:05:02 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <string.h>
 # include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
@@ -28,17 +23,9 @@ typedef struct t_winsize
 {
 	int	width;
 	int	height;
+	int	rows;
+	int	cols;
 }	t_winsize;
-
-typedef struct t_pos
-{
-	int	x;
-	int	y;
-	int	y_up;
-	int	y_down;
-	int	x_left;
-	int	x_right;
-}	t_pos;
 
 typedef struct t_player
 {
@@ -54,6 +41,7 @@ typedef struct t_player
 	char			fire_axis;
 	int				fire_stopped;
 	int				fire_move_size;
+	int				side_face_start;
 }	t_player;
 
 typedef struct t_mlx
@@ -92,13 +80,16 @@ typedef struct t_valid_path
 void	is_map_valid(t_mlx *mlx_game);
 void	is_map_ext_ber(t_mlx *mlx_game, char *path);
 int		is_move_valid(t_mlx *mlx_game, int x, int y);
-int		has_valid_path(t_list **headref, int rows, int cols);
+int		is_valid_move(int row, int col, char **map, t_winsize *winsize);
+int		has_valid_path(t_list **headref, t_winsize *winsize);
+void	flood_fill(int row, int col, t_valid_path *vars, t_winsize *winsize);
 int		check_key(mlx_key_data_t keydata);
 void	check_if_collectible_taken(t_mlx *mlx_game);
 void	check_if_collide_with_enemy(t_mlx *mlx_game);
 int		check_if_fire_hit_exit(t_mlx *mlx_game, int x, int y);
 int		check_if_fire_hit_wall(t_mlx *mlx_game, int x, int y);
 void	check_if_enemy_hit(t_mlx *mlx_game);
+int		check_for_side_to_face(t_mlx *mlx_game, char *line, char *prev_line);
 void	shoot_fire(t_mlx *mlx_game);
 void	update_fire(t_mlx *mlx_game);
 

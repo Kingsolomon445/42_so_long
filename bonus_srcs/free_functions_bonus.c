@@ -6,11 +6,21 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:00:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 19:12:14 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:03:33 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
+
+void	ft_error(t_mlx *mlx_game, const char *message)
+{
+	ft_free_lst(&(mlx_game->headref));
+	ft_free(mlx_game->winsize);
+	ft_free(mlx_game);
+	write(1, "Error\n", 7);
+	ft_printf("%s\n", message);
+	exit(EXIT_FAILURE);
+}
 
 void	ft_free_double_int_ptr(int	**ptr, int rows)
 {

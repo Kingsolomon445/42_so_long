@@ -6,7 +6,7 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 13:19:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 19:22:16 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:02:41 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <string.h>
 # include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
@@ -28,17 +23,9 @@ typedef struct t_winsize
 {
 	int	width;
 	int	height;
+	int	rows;
+	int	cols;
 }	t_winsize;
-
-typedef struct t_pos
-{
-	int	x;
-	int	y;
-	int	y_up;
-	int	y_down;
-	int	x_left;
-	int	x_right;
-}	t_pos;
 
 typedef struct t_player
 {
@@ -47,6 +34,7 @@ typedef struct t_player
 	int				total_moves;
 	int				move_size;
 	int				player_can_exit;
+	int				side_face_start;
 }	t_player;
 
 typedef struct t_mlx
@@ -80,9 +68,12 @@ typedef struct t_valid_path
 void	is_map_valid(t_mlx *mlx_game);
 void	is_map_ext_ber(t_mlx *mlx_game, char *path);
 int		is_move_valid(t_mlx *mlx_game, int x, int y);
-int		has_valid_path(t_list **headref, int rows, int cols);
+int		is_valid_move(int row, int col, char **map, t_winsize *winsize);
+int		has_valid_path(t_list **headref, t_winsize *winsize);
+void	flood_fill(int row, int col, t_valid_path *vars, t_winsize *winsize);
 int		check_key(mlx_key_data_t keydata);
 void	check_if_collectible_taken(t_mlx *mlx_game);
+void	get_side_face_start(t_mlx *mlx_game);
 
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	my_closehook(void *param);
@@ -101,7 +92,6 @@ void	end_game(t_mlx *mlx_game, const char *message);
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref);
 
 void	update_player_img(t_mlx *mlx_game, char side, int x, int y);
-void	update_str_img(t_mlx *mlx_game);
 void	set_window_size(t_mlx *mlx_game);
 void	set_up_img_pos(t_mlx *mlx_game);
 void	set_up_images(t_mlx *mlx_game);

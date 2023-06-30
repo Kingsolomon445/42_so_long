@@ -6,11 +6,30 @@
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:12:07 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/28 19:00:41 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:06:47 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+int	is_valid_move(int row, int col, char **map, t_winsize *winsize)
+{
+	if (row >= 0 && row < winsize->rows && col >= 0 && col < \
+	winsize->cols && map[row][col] != '1')
+		return (1);
+	return (0);
+}
+
+void	flood_fill(int row, int col, t_valid_path *vars, t_winsize *winsize)
+{
+	if (!is_valid_move(row, col, vars->map, winsize) || vars->visited[row][col])
+		return ;
+	vars->visited[row][col] = 1;
+	flood_fill(row - 1, col, vars, winsize);
+	flood_fill(row + 1, col, vars, winsize);
+	flood_fill(row, col - 1, vars, winsize);
+	flood_fill(row, col + 1, vars, winsize);
+}
 
 void	get_wall_size(int *hor_wall, int *ver_wall, t_list *headref)
 {
@@ -40,6 +59,5 @@ void	end_game(t_mlx *mlx_game, const char *message)
 	ft_printf("%s\n", message);
 	mlx_terminate(mlx_game->mlx);
 	ft_free_ptr_all(mlx_game);
-	system("leaks so_long");
 	exit(EXIT_SUCCESS);
 }
