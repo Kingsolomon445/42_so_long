@@ -12,38 +12,42 @@
 
 #include "so_long.h"
 
-void	set_ups(t_mlx *mlx_game)
+static void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
-	set_window_size(mlx_game);
-	mlx_game->mlx = mlx_init(mlx_game->winsize->width, \
-	mlx_game->winsize->height, "so long", 0);
-	if (!mlx_game->mlx)
-		ft_error(mlx_game, "mlx initialization failed!");
-	set_up_images(mlx_game);
-	set_up_img_pos(mlx_game);
+	t_mlx		*mlx_game;
+
+	mlx_game = (t_mlx *)param;
+	if (keydata.key == MLX_KEY_ESCAPE && (keydata.action == MLX_PRESS || \
+	keydata.action == MLX_REPEAT))
+		end_game(mlx_game, "You quit!");
+	else
+		player_moves(mlx_game, keydata);
+	check_if_collectible_taken(mlx_game);
 }
 
-/*
-It is to be noted that 1400 and 2590 here represents \
-the max of the screen where this program was coded
-*/
-int	get_img_size(t_mlx *mlx_game)
+static void	my_loophook(void *param)
 {
-	int	img_size;
-	int	img_size_by_col;
+	mlx_image_t	*collectible;
+	t_player	*player;
+	mlx_image_t	*exit;
+	t_mlx		*mlx_game;
 
-	img_size = 70;
-	img_size_by_col = 0;
-	if (mlx_game->winsize->rows > 20)
-		img_size = 1400 / mlx_game->winsize->rows;
-	if (mlx_game->winsize->cols > 37)
-		img_size_by_col = 2590 / mlx_game->winsize->cols;
-	if (img_size_by_col && img_size_by_col < img_size)
-		return (img_size_by_col);
-	return (img_size);
+	mlx_game = (t_mlx *)param;
+	collectible = ((t_mlx *)(param))->collectible_img;
+	player = ((t_mlx *)(param))->player;
+	exit = ((t_mlx *)(param))->exit_img;
+	if (collectible->count == 0 && player->player_img->instances[0].x \
+	== exit->instances[0].x && player->player_img->instances[0].y == \
+	exit->instances[0].y && player->player_can_exit)
+		end_game(mlx_game, "You win!");
+	check_if_collectible_taken(mlx_game);
+	if (collectible->count <= 0)
+		open_exit_door(mlx_game, mlx_game->exit_img->instances[0].x, \
+		mlx_game->exit_img->instances[0].y);
 }
 
-void	play_game(t_mlx *mlx_game)
+
+static void	play_game(t_mlx *mlx_game)
 {
 	mlx_game->player = malloc(sizeof(t_player));
 	if (!mlx_game->player)
@@ -69,6 +73,7 @@ int	main(int argc, char *argv[])
 		return (ft_printf("Error\nAllocation failed!\n"), 1);
 	mlx_game->headref = NULL;
 	mlx_game->winsize = NULL;
+	mlx_game->valid_chars = "01ECP";
 	if (argc != 2)
 		ft_error(mlx_game, "Invalid arguments!\n");
 	path = argv[1];
@@ -79,7 +84,7 @@ int	main(int argc, char *argv[])
 	read_map(mlx_game, fd);
 	close(fd);
 	mlx_game->winsize = malloc(sizeof(t_winsize));
-	is_map_valid(mlx_game);
+	is_map_valid(mlx_game, 'E');
 	play_game(mlx_game);
 	mlx_terminate(mlx_game->mlx);
 	return (0);

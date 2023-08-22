@@ -12,7 +12,7 @@
 
 #include "so_long_bonus.h"
 
-void	update_player_img(t_mlx *mlx_game, int x, int y)
+static void	update_player_img(t_mlx *mlx_game, int x, int y)
 {
 	char	*path;
 
@@ -57,7 +57,7 @@ void	update_str_img(t_mlx *mlx_game)
 	ft_free(str_to_put);
 }
 
-void	update_and_display_moves(t_mlx *mlx_game, \
+static void	update_and_display_moves(t_mlx *mlx_game, \
 mlx_instance_t *instances, int move_size, char axis)
 {
 	mlx_delete_image(mlx_game->mlx, mlx_game->fire_img);

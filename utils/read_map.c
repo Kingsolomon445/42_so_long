@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "utils.h"
 
 void	is_map_ext_ber(t_mlx *mlx_game, char *path)
 {
@@ -27,7 +27,7 @@ void	is_map_ext_ber(t_mlx *mlx_game, char *path)
 		ft_error(mlx_game, "Invalid Extension\n");
 }
 
-void	is_line_valid(char *line, t_mlx *mlx_game)
+static void	is_line_valid(char *line, t_mlx *mlx_game)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ void	is_line_valid(char *line, t_mlx *mlx_game)
 		ft_error(mlx_game, "Empty line in map!\n");
 	while (*(line + i))
 	{
-		if (!ft_strchr("01ECP", *(line + i)) && *(line + i + 1))
+		if (!ft_strchr(mlx_game->valid_chars, *(line + i)) && *(line + i + 1))
 		{
 			ft_free(line);
 			ft_error(mlx_game, "Invalid character in map\n");
@@ -47,7 +47,7 @@ void	is_line_valid(char *line, t_mlx *mlx_game)
 	}
 }
 
-t_list	*make_new_node(char *line)
+static t_list	*make_new_node(char *line)
 {
 	char	*new_line;
 

@@ -12,7 +12,28 @@
 
 #include "so_long.h"
 
-void	update_player_img(t_mlx *mlx_game, char side, int x, int y)
+
+static int	is_move_valid(t_mlx *mlx_game, int x, int y)
+{
+	int	wall_count;
+	int	i;
+
+	i = 0;
+	wall_count = mlx_game->wall_img->count;
+	while (i < wall_count)
+	{
+		if (x == mlx_game->wall_img->instances[i].x && \
+		y == mlx_game->wall_img->instances[i].y)
+			return (0);
+		i++;
+	}
+	if (x == mlx_game->exit_img->instances[0].x && y == \
+	mlx_game->exit_img->instances[0].y && !mlx_game->player->player_can_exit)
+		return (0);
+	return (1);
+}
+
+static void	update_player_img(t_mlx *mlx_game, char side, int x, int y)
 {
 	char	*path;
 
@@ -34,7 +55,7 @@ void	update_player_img(t_mlx *mlx_game, char side, int x, int y)
 	mlx_delete_texture(mlx_game->player->player_texture);
 }
 
-void	update_and_display_moves(t_mlx *mlx_game, \
+static void	update_and_display_moves(t_mlx *mlx_game, \
 mlx_instance_t *instances, int move_size, char axis)
 {
 	if (axis == 'x')

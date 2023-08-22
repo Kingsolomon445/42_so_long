@@ -12,47 +12,6 @@
 
 #include "so_long_bonus.h"
 
-int	check_key(mlx_key_data_t keydata)
-{
-	if ((keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP) && \
-	(keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		return ('w');
-	if ((keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_DOWN) && \
-	(keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		return ('a');
-	if ((keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_LEFT) && \
-	(keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		return ('s');
-	if ((keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_RIGHT) && \
-	(keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		return ('d');
-	return ('\0');
-}
-
-void	check_if_collectible_taken(t_mlx *mlx_game)
-{
-	int			i;
-	t_player	*player;
-	mlx_image_t	*collectible;
-
-	player = mlx_game->player;
-	collectible = mlx_game->collectible_img;
-	i = 0;
-	while (i < mlx_game->collectible_cnt)
-	{
-		if (player->player_img->instances[0].x == \
-		collectible->instances[i].x && player->player_img->instances[0].y == \
-		collectible->instances[i].y)
-		{
-			collectible->instances[i].x += mlx_game->winsize->width * 20;
-			collectible->instances[i].y += mlx_game->winsize->height * 20;
-			collectible->count--;
-			mlx_game->player->score++;
-			break ;
-		}
-		i++;
-	}
-}
 
 void	check_if_collide_with_enemy(t_mlx *mlx_game)
 {

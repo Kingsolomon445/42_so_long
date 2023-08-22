@@ -6,7 +6,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-INC_GLFW = -lglfw -L "$(HOME)/.brew/Cellar/glfw/3.3.8/lib/"
+INC_GLFW = -lglfw -L "/opt/homebrew/Cellar/glfw/3.3.8/lib"
 
 MLX_DIR = ./MLX42
 
@@ -24,6 +24,10 @@ SRCS_DIR = ./srcs
 
 SRCS = $(wildcard $(SRCS_DIR)/*.c)
 
+UTILS_SRCS_DIR = ./utils
+
+UTILS_SRCS = $(wildcard $(UTILS_SRCS_DIR)/*.c)
+
 BONUS_SRCS_DIR = ./bonus_srcs
 
 BONUS_SRCS = $(wildcard $(BONUS_SRCS_DIR)/*.c)
@@ -31,6 +35,10 @@ BONUS_SRCS = $(wildcard $(BONUS_SRCS_DIR)/*.c)
 OBJS_DIR = ./objs
 
 OBJS = $(addprefix $(OBJS_DIR)/,$(notdir $(SRCS:.c=.o)))
+
+UTILS_OBJS_DIR = ./utils_objs
+
+UTILS_OBJS = $(addprefix $(UTILS_OBJS_DIR)/,$(notdir $(UTILS_SRCS:.c=.o)))
 
 BONUS_OBJS_DIR = ./bonus_objs
 
@@ -45,14 +53,17 @@ all: $(NAME)
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
 
+$(UTILS_OBJS_DIR):
+	mkdir -p $(UTILS_OBJS_DIR)
+
 $(BONUS_OBJS_DIR):
 	mkdir -p $(BONUS_OBJS_DIR)
 
-$(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(MLX)
-	$(CC) -o $(NAME) $(OBJS) $(MLX) $(LIBFT) $(INC_GLFW)
+$(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(UTILS_OBJS_DIR) $(UTILS_OBJS)  $(MLX)
+	$(CC) -o $(NAME) $(OBJS) $(UTILS_OBJS) $(MLX) $(LIBFT) $(INC_GLFW)
 
-$(BONUS): $(BONUS_OBJS_DIR) $(BONUS_OBJS) $(MLX) $(LIBFT)
-	$(CC) -o $(BONUS) $(BONUS_OBJS) $(MLX) $(LIBFT) $(INC_GLFW)
+$(BONUS): $(BONUS_OBJS_DIR) $(BONUS_OBJS) $(UTILS_OBJS_DIR) $(UTILS_OBJS) $(MLX) $(LIBFT)
+	$(CC) -o $(BONUS) $(BONUS_OBJS) $(UTILS_OBJS) $(MLX) $(LIBFT) $(INC_GLFW)
 
 $(MLX):
 	cd $(MLX_DIR) && cmake -B build && cmake --build build -j4
@@ -69,11 +80,15 @@ $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
 $(BONUS_OBJS_DIR)/%.o: $(BONUS_SRCS_DIR)/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
+$(UTILS_OBJS_DIR)/%.o: $(UTILS_SRCS_DIR)/%.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 bonus:	$(BONUS)
 
 clean:
 	$(RM) $(OBJS_DIR)
 	$(RM) $(BONUS_OBJS_DIR)
+	$(RM) $(UTILS_OBJS_DIR)
 	$(RM) $(MLX_BUILD_DIR)
 	cd $(LIBFT_DIR) && make clean
 

@@ -12,7 +12,7 @@
 
 #include "so_long.h"
 
-void	set_up_player_images(t_mlx *mlx_game)
+static void	set_up_player_images(t_mlx *mlx_game)
 {
 	if (mlx_game->player->side_face_start == 'b')
 		mlx_game->player->player_texture = mlx_load_png("resources/hero/1.png");
@@ -32,7 +32,7 @@ void	set_up_player_images(t_mlx *mlx_game)
 	mlx_delete_texture(mlx_game->player->player_texture);
 }
 
-void	set_up_images(t_mlx *mlx_game)
+static void	set_up_images(t_mlx *mlx_game)
 {
 	mlx_game->background_texture = mlx_load_png("resources/background.png");
 	mlx_game->background_img = mlx_texture_to_image(mlx_game->mlx, \
@@ -61,7 +61,7 @@ void	set_up_images(t_mlx *mlx_game)
 	mlx_delete_xpm42(mlx_game->exit_xpm);
 }
 
-void	put_img_on_map(t_mlx *mlx_game, char *line, int y)
+static void	put_img_on_map(t_mlx *mlx_game, char *line, int y)
 {
 	int	j;
 	int	x;
@@ -86,7 +86,7 @@ void	put_img_on_map(t_mlx *mlx_game, char *line, int y)
 	}
 }
 
-void	set_up_img_pos(t_mlx *mlx_game)
+static void	set_up_img_pos(t_mlx *mlx_game)
 {
 	t_list	*current;
 	char	*line;
@@ -104,14 +104,13 @@ void	set_up_img_pos(t_mlx *mlx_game)
 	mlx_game->collectible_cnt = mlx_game->collectible_img->count;
 }
 
-void	set_window_size(t_mlx *mlx_game)
+void	set_ups(t_mlx *mlx_game)
 {
-	int	hor_wall;
-	int	ver_wall;
-
-	hor_wall = 0;
-	ver_wall = 0;
-	get_wall_size(&hor_wall, &ver_wall, mlx_game->headref);
-	mlx_game->winsize->width = (hor_wall) * mlx_game->img_size;
-	mlx_game->winsize->height = (ver_wall) * mlx_game->img_size;
+	set_window_size(mlx_game);
+	mlx_game->mlx = mlx_init(mlx_game->winsize->width, \
+	mlx_game->winsize->height, "so long", 0);
+	if (!mlx_game->mlx)
+		ft_error(mlx_game, "mlx initialization failed!");
+	set_up_images(mlx_game);
+	set_up_img_pos(mlx_game);
 }

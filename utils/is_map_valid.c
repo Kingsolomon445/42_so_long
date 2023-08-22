@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "utils.h"
 
-int	count_occurences(t_list *headref, char ch)
+static int	count_occurences(t_list *headref, char ch)
 {
 	t_list	*current;
 	char	*line;
@@ -36,7 +36,7 @@ int	count_occurences(t_list *headref, char ch)
 	return (occ);
 }
 
-int	is_map_rectangular(t_list *headref)
+static int	is_map_rectangular(t_list *headref)
 {
 	t_list	*current;
 
@@ -50,7 +50,7 @@ int	is_map_rectangular(t_list *headref)
 	return (1);
 }
 
-int	is_wall(char *line)
+static int	is_wall(char *line)
 {
 	int	i;
 
@@ -64,7 +64,7 @@ int	is_wall(char *line)
 	return (1);
 }
 
-int	is_surrounded_by_wall(t_list *headref)
+static int	is_surrounded_by_wall(t_list *headref)
 {
 	t_list	*current;
 	t_list	*last;
@@ -83,14 +83,14 @@ int	is_surrounded_by_wall(t_list *headref)
 	return (1);
 }
 
-void	is_map_valid(t_mlx *mlx_game)
+void	is_map_valid(t_mlx *mlx_game, char exit)
 {
 	t_list	*headref;
 
 	headref = mlx_game->headref;
 	mlx_game->winsize->rows = ft_lstsize(headref);
 	mlx_game->winsize->cols = ft_strlen((char *)headref->content);
-	if (count_occurences(headref, 'E') != 1)
+	if (count_occurences(headref, exit) != 1)
 		ft_error(mlx_game, "No Exit or Too many Exit!\n");
 	if (count_occurences(headref, 'C') < 1)
 		ft_error(mlx_game, "There are no collectibles\n");
@@ -100,6 +100,7 @@ void	is_map_valid(t_mlx *mlx_game)
 		ft_error(mlx_game, "Map isn't rectangular!\n");
 	if (!is_surrounded_by_wall(headref))
 		ft_error(mlx_game, "Map is not surrounded by wall!\n");
-	if (!has_valid_path(&headref, mlx_game->winsize))
+	if (!has_valid_path(&headref, mlx_game->winsize, exit))
 		ft_error(mlx_game, "Map doesn't have a valid path!\n");
 }
+

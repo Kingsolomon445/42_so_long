@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_functions_bonus.c                             :+:      :+:    :+:   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadahun <ofadahun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:00:13 by ofadahun          #+#    #+#             */
-/*   Updated: 2023/06/30 17:03:33 by ofadahun         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:01:00 by ofadahun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long_bonus.h"
+#include "utils.h"
 
 void	ft_error(t_mlx *mlx_game, const char *message)
 {
@@ -20,32 +20,6 @@ void	ft_error(t_mlx *mlx_game, const char *message)
 	write(1, "Error\n", 7);
 	ft_printf("%s\n", message);
 	exit(EXIT_FAILURE);
-}
-
-void	ft_free_double_int_ptr(int	**ptr, int rows)
-{
-	int	i;
-
-	i = 0;
-	while (i < rows)
-	{
-		ft_free(*(ptr + i));
-		i++;
-	}
-	ft_free(ptr);
-}
-
-void	ft_free_double_str_ptr(char	**ptr)
-{
-	int	i;
-
-	i = 0;
-	while (*(ptr + i))
-	{
-		ft_free(*(ptr + i));
-		i++;
-	}
-	ft_free(ptr);
 }
 
 void	ft_free_lst(t_list **headref)
